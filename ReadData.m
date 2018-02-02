@@ -52,5 +52,5 @@ writeDigitalPin(a, 'D13', 0);
 
 %% Plotting all saved data
 % TODO
-
+clear a
 disp('End')
