@@ -3,12 +3,12 @@ close all
 clear
 clc
 %% Connection
-a1 = arduino('COM6', 'uno');
+a1 = arduino('COM7', 'Mega2560');
 
 %% Parameters
 T = 100;        % number of samples to view on plot
 nCount = 1;     % initial count
-nSens = 5;      % number of sensors
+nSens = 9;      % number of sensors
 for nSen = 1: nSens
     voltageInputs(nSen,:) = zeros(T,1);
 end
