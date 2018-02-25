@@ -14,7 +14,7 @@ Pablo  = 'AFCG_Green_Side_2018-02-23T133414181.xlsx';
 Roomie2  = 'AFCG_Green_Side_2018-02-23T135820861.xlsx';
 Brenosa = 'AFCG_Green_Side_2018-02-23T151949001.xlsx';
 Prima = 'AFCG_Green_Side_2018-02-23T155657865.xlsx';
-Jaime = 'AFCG_Green_Side_2018-02-23T164205229.xlsx';
+JaimeB = 'AFCG_Green_Side_2018-02-23T164205229.xlsx';
 Doris = 'AFCG_Green_Side_2018-02-23T170422681.xlsx';
 
 T1 = readtable(Carlos);
@@ -24,11 +24,8 @@ T4 = readtable(Sonia);
 T5 = readtable(Pablo);
 T6 = readtable(Roomie2);
 T7 = readtable(Brenosa);
-T8 = readtable(Prima);
+T8 = readtable(JaimeB);
 T9 = readtable(Doris);
-T10 = readtable(Aldo);
-%T11 = readtable(filename11);
-%T12 = readtable(filename12);
 
 
 
