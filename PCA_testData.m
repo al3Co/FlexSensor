@@ -31,8 +31,13 @@ S = cat(1,T1.Sec, T2.Sec, T3.Sec, T4.Sec, T5.Sec, T6.Sec, T7.Sec, T8.Sec, T9.Sec
 
 %% PCA principal component analysis of raw data
 
-X = [A0 A1 A2 A3 A4 A5 A6 A7 A8 A9];
-M = mean(X)
-coeff = pca(X)
+X = [A0 A1 A2 A3 A4];
+X2 = [A5 A6 A7 A8 A9];
+%
+M = mean(X);
+coeff = pca(X);
 [wcoeff,~,latent,~,explained] = pca(X,'VariableWeights','variance');
-
+%
+M = mean(X2)
+coeff = pca(X2)
+[wcoeff,~,latent,~,explained] = pca(X2,'VariableWeights','variance');
