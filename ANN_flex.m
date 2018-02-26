@@ -4,7 +4,7 @@ clear
 clc
 %% Read and categorice data
 
-load('/Users/aldo/Documents/GitHub/FlexSensor/workSpaceData_UseThis.mat')
+load('workSpaceData_UseThis.mat')
 
 A0 = cat(1,T1.A0, T2.A0, T3.A0, T4.A0, T5.A0, T6.A0, T7.A0, T8.A0, T9.A0);
 A1 = cat(1,T1.A1, T2.A1, T3.A1, T4.A1, T5.A1, T6.A1, T7.A1, T8.A1, T9.A1);
@@ -30,21 +30,50 @@ S = cat(1,T1.Sec, T2.Sec, T3.Sec, T4.Sec, T5.Sec, T6.Sec, T7.Sec, T8.Sec, T9.Sec
 
 
 
-%% RNA
+%% RNA feedforwardNet
 
+% 
+% input = [A0 A1 A2 A3 A4 A5 A6 A7 A8 A9]'; % INPUTS
+% % target = [Angle from IMUs and Voltage from flexSensor]'
+% target = [AngPitch AngRoll AngYaw]';
+% net = feedforwardnet(10);
+% [net,tr] = train(net,input,target);
+% view(net)
+% % performance
+% y = net(input);
+% perf = perform(net,y,target);
+% % testing network
+% %output = net([]');
+% % generate Function
+% genFunction(net,'ANN_ExoData_Fcn');
+% y2 = ANN_ExoData_Fcn(input);
+% accuracy2 = max(abs(y-y2));
+
+%% RNA Distributed Delay Network
 
 input = [A0 A1 A2 A3 A4 A5 A6 A7 A8 A9]'; % INPUTS
-% target = [Angle from IMUs and Voltage from flexSensor]'
 target = [AngPitch AngRoll AngYaw]';
-net = feedforwardnet(10);
-[net,tr] = train(net,input,target);
-view(net)
-% performance
-y = net(input);
-perf = perform(net,y,target);
-% testing network
-%output = net([]');
-% generate Function
-genFunction(net,'ANN_ExoData_Fcn');
-y2 = ANN_ExoData_Fcn(input);
-accuracy2 = max(abs(y-y2));
+
+% Train a time delay network
+net = timedelaynet(10:1,10);
+%net.trainParam.epochs = 1000;
+[Xs,Xi,Ai,Ts] = preparets(net,input,target);
+net = train(net,Xs,Ts,Xi,Ai);
+%view(net)
+
+% Calculate the network performance.
+[Y,Xf,Af] = net(Xs,Xi,Ai);
+perf = perform(net,Ts,Y);
+
+% Run the prediction for 20 timesteps ahead in closed loop mode.
+[netc,Xic,Aic] = closeloop(net,Xf,Af);
+view(netc)
+Xnew = [1.59,2.03,1.63,1.39,1.22,1.13,2.29,1.74,1.43,1.79];
+y2 = netc(Xnew,Xic,Aic);
+
+
+
+
+
+
+
