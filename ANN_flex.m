@@ -32,31 +32,48 @@ S = cat(1,T1.Sec, T2.Sec, T3.Sec, T4.Sec, T5.Sec, T6.Sec, T7.Sec, T8.Sec, T9.Sec
 
 %% RNA feedforwardNet
 
-% 
-% input = [A0 A1 A2 A3 A4 A5 A6 A7 A8 A9]'; % INPUTS
-% % target = [Angle from IMUs and Voltage from flexSensor]'
-% target = [AngPitch AngRoll AngYaw]';
+input = [A0 A1 A2 A3 A4 A5 A6 A7 A8 A9]'; % INPUTS
+target = [AngPitch AngRoll AngYaw]';
+% % 
 % net = feedforwardnet(10);
 % [net,tr] = train(net,input,target);
-% view(net)
+% %view(net)
 % % performance
 % y = net(input);
 % perf = perform(net,y,target);
 % % testing network
-% %output = net([]');
+% output = net([1.62,1.76,1.76,1.43,1.51,1.14,1.91,1.81,1.46,1.91]');
 % % generate Function
-% genFunction(net,'ANN_ExoData_Fcn');
-% y2 = ANN_ExoData_Fcn(input);
-% accuracy2 = max(abs(y-y2));
+% genFunction(net,'ANN_feedforwardNet_Fcn');
+% y2 = ANN_feedforwardNet_Fcn(input);
+% accuracy = max(abs(y-y2));
+
 
 %% RNA Distributed Delay Network
 
-input = [A0 A1 A2 A3 A4 A5 A6 A7 A8 A9]'; % INPUTS
-target = [AngPitch AngRoll AngYaw]';
+% input = [A0 A1 A2 A3 A4 A5 A6 A7 A8 A9]'; % INPUTS
+% target = [AngPitch AngRoll AngYaw]';
 
-% Train a time delay network
-net = timedelaynet(10:1,10);
-%net.trainParam.epochs = 1000;
+% ftdnn_net = timedelaynet(1:2,20);
+% ftdnn_net.trainParam.epochs = 1000;
+% ftdnn_net.divideFcn = '';
+% 
+% ftdnn_net = train(ftdnn_net,input,target);
+% 
+% % performance 
+% ftdnn_y = ftdnn_net(input); 
+% ftdnn_perf = perform(ftdnn_net,ftdnn_y,target);
+% 
+% ftdnn_output = ftdnn_net([1.62,1.76,1.76,1.43,1.51,1.14,1.91,1.81,1.46,1.91]');
+
+% generate Function
+% genFunction(ftdnn_net,'ANN_DNN_Fcn');
+% [dnn_Y,dnn_Xf,dnn_Af] = ANN_DNN_Fcn(input,10);
+% accuracy2 = max(abs(ftdnn_y-ftdnn_y2));
+
+
+% % Train a time delay network
+net = timedelaynet(1:2,10);
 [Xs,Xi,Ai,Ts] = preparets(net,input,target);
 net = train(net,Xs,Ts,Xi,Ai);
 %view(net)
@@ -71,7 +88,7 @@ view(netc)
 Xnew = [1.59,2.03,1.63,1.39,1.22,1.13,2.29,1.74,1.43,1.79];
 y2 = netc(Xnew,Xic,Aic);
 
-
+disp('1.173783521926599, -0.824463169607813, 2.377496046622224');
 
 
 
