@@ -1,9 +1,12 @@
 function [angM1, angM2, IMU] = funcAngOpti2(BRAZO, ESPALDA, FLEX_DATA)
-
+%% IMU to angle
 [r1, r2, r3] = quat2angle([FLEX_DATA.Quat1, FLEX_DATA.Quat2, FLEX_DATA.Quat3, FLEX_DATA.Quat4], 'XYZ');
 IMU = [r1 r2 r3];
+
+%% preparing data
 BRAZO = deg2rad(BRAZO);
 ESPALDA = deg2rad(ESPALDA);
+
 %% Method 1
 A = cat(4,BRAZO(:,1),BRAZO(:,2),BRAZO(:,3));        % Combine the three components in the 4th dimension
 B = cat(4,ESPALDA(:,1),ESPALDA(:,2),ESPALDA(:,3));  % Ditto
