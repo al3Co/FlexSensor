@@ -5,20 +5,10 @@ clc
 
 load('workSpace_ANN.mat')
 
+
 %X = [A0 A1 A3]'; % INPUTS
 T = [AngPitch AngRoll AngYaw]';
-%% Time delay neural network
 
-ftdnn_net = timedelaynet(1:2,10);
-ftdnn_net.trainParam.epochs = 1000;
-ftdnn_net.divideFcn = '';
-
-ftdnn_net = train(ftdnn_net,X,T);
-
-% performance 
-ftdnn_y = ftdnn_net(X); 
-ftdnn_perf = perform(ftdnn_net,ftdnn_y,T);
-%ftdnn_out = ftdnn_net([1.41 2.07 1.31]');
 
 %% Feedforward Neural Network
 
