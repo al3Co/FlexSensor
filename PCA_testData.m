@@ -8,6 +8,4 @@ load('workSpaceSamperData.mat')
 
 %% PCA principal component analysis of raw data
 
-PCA_PlotFunc(SDGF);
-
-
+PCA_PlotFunc(SDPI);
