@@ -1,0 +1,23 @@
+function PCA_PlotFunc(data1)
+
+f = figure;
+p = uipanel('Parent',f,'BorderType','none'); 
+p.Title = 'My Super Title'; 
+p.TitlePosition = 'centertop'; 
+p.FontSize = 12;
+p.FontWeight = 'bold';
+
+
+[coeff, score, coeff2, score2] = PCA_Function_ToPlot (data1);
+
+subplot(1,2,1,'Parent',p) 
+%figure('Name', 'External sensors');
+biplot(coeff(:,1:2),'scores',score(:,1:2),'varlabels',{'v_6','v_7','v_8','v_9','v10'});
+title('External sensors') 
+
+subplot(1,2,2,'Parent',p) 
+%figure('Name', 'Internal sensors');
+biplot(coeff2(:,1:2),'scores',score2(:,1:2),'varlabels',{'v_1','v_2','v_3','v_4','v5'});
+title('Internal sensors') 
+
+end
