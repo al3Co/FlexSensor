@@ -2,35 +2,31 @@
 close all
 clear
 clc
+
 %% load Data
-load('BlueFront.mat');
-load('GreenSideways.mat');
-load('PurpleFront.mat');
-load('PurpleInverse.mat');
+load('26B.mat');
+load('26GF.mat');
+load('26GS.mat');
+load('26P.mat');
+load('26PI.mat');
+
+%% concatenate arrays
+Brazo = cat(1, BrazoBlue, BrazoGF, BrazoGS, BrazoP, BrazoPINV);
+Espalda = cat(1, EspaldaBlue, EspaldaGF, EspaldaGS, EspaldaP, EspaldaPINV);
+IMUs = cat(1, B_IMU_26, GF_IMU_26, GS_IMU_26, P_IMU_26, PI_IMU_26);
+
+%% 
+[angM1, angM2, IMU] = funcAngOpti2(Brazo, Espalda, IMUs);
 
 
+%% filtering shoulder data
+fk = funcFilter(angM2);
 
-% 
-% Brazo = cat(1,
-% 
-% [angM1, angM2, IMU] = funcAngOpti2(BRAZO, ESPALDA, SDBF);
-% 
-% %% cut wrong data 
-% ini = 137; fin = 1111;
-% BRAZO = BRAZO(ini:fin, 1:3);
-% ESPALDA = ESPALDA(ini:fin, 1:3);
-% IMU = IMU(ini:fin, 1:3);
-% angM1 = angM1(ini:fin, 1:1);
-% angM2 = angM2(ini:fin, 1:1);
-% SDBF = SDBF(ini:fin, 1:21);
-% %% filtering shoulder data
-% fk = funcFilter(angM2);
-% 
-% x = 1:length(angM1);
-% y = fk;
-% [p,~,mu] = polyfit(x, y, 45);
-% f = polyval(p,x,[],mu);
-% 
+x = 1:length(angM1);
+y = fk;
+[p,~,mu] = polyfit(x, y, 45);
+f = polyval(p,x,[],mu);
+
 % %% ANN Feedforward Neural Network
 % 
 % % feed
