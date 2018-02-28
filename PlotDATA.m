@@ -4,21 +4,6 @@ clear all
 close
 %% Data
 
-day = '26';
-[Brazo, Espalda, IMUs] = loadDataTest(day);
-
-%% angle BTW Shoulder and Back
-[angM1, angM2, BrazoPos, IMUang, IMUQ] = funcAngOpti2(Brazo, Espalda, IMUs);
-
-%% filtering shoulder data
-[fk, f] = funcFilter(angM2);
-
-%plot([angM2, fk', f'])
-
-%% Plot data
-flexS = [IMUs.A0 IMUs.A1 IMUs.A2 IMUs.A3 IMUs.A4 IMUs.A5 IMUs.A6 IMUs.A7 IMUs.A8 IMUs.A9];
-plot(flexS);
-hold on
 day = '27';
 [Brazo, Espalda, IMUs] = loadDataTest(day);
 
@@ -29,10 +14,13 @@ day = '27';
 [fk, f] = funcFilter(angM2);
 
 %plot([angM2, fk', f'])
-
+Brazo = deg2rad(Brazo);
 %% Plot data
-flexS = [IMUs.A0 IMUs.A1 IMUs.A2 IMUs.A3 IMUs.A4 IMUs.A5 IMUs.A6 IMUs.A7 IMUs.A8 IMUs.A9];
-plot(flexS);
+flexS = [IMUs.A1 IMUs.A3 IMUs.A4];
+plot(Brazo);
+legend('Ax','Ay','Az')
+xlabel('Sample'), %ylabel('Sensor Voltage')
+title('Shoulder Data given by OptiTrack');
 
-
-
+%plot(IMUQ)
+%plot(Brazo)

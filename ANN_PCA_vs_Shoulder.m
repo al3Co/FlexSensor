@@ -16,9 +16,9 @@ day = '27';
 
 %% ANN Feedforward Neural Network
 % feed
-X = [IMUs.A1 IMUs.A2 IMUs.A4]'; % INPUTS PCA
-T = [f' IMUQ]';
-% T = [IMUang]';
+X = [IMUs.A0 IMUs.A1 IMUs.A3 IMUs.A4]'; % INPUTS PCA
+T = [IMUQ]';
+% T = [IMUQ]';
 
 net = feedforwardnet(10,'trainlm'); % hiddenSizes
 [net,tr] = train(net,X,T);
@@ -31,4 +31,5 @@ perf = perform(net,y,T);
 % generate Function
 genFunction(net,'ANN_PCA_vs_Shoulder_Fcn');
 y2 = ANN_PCA_vs_Shoulder_Fcn(X);
-accuracy = max(abs(y-y2));
+accuracy = max(abs(y-y2)');
+accuracy = max(accuracy)
