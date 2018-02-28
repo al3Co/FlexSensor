@@ -8,7 +8,7 @@ day = '27';
 [Brazo, Espalda, IMUs] = loadDataTest(day);
 
 %% angle BTW Shoulder and Back
-[angM1, angM2, brazoPos, IMUang] = funcAngOpti2(Brazo, Espalda, IMUs);
+[angM1, angM2, brazoPos, IMUang, IMUQ] = funcAngOpti2(Brazo, Espalda, IMUs);
 
 %% filtering shoulder data
 [fk, f] = funcFilter(angM2);
@@ -16,8 +16,8 @@ day = '27';
 
 %% ANN Feedforward Neural Network
 % feed
-X = [IMUs.A1 IMUs.A2 IMUs.A4 IMUs.A6 IMUs.A7 IMUs.A9]'; % INPUTS PCA
-T = [f']';
+X = [IMUs.A1 IMUs.A2 IMUs.A4]'; % INPUTS PCA
+T = [f' IMUQ]';
 % T = [IMUang]';
 
 net = feedforwardnet(10,'trainlm'); % hiddenSizes

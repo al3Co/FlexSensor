@@ -4,11 +4,11 @@ clear all
 close
 %% Data
 
-day = '27';
+day = '26';
 [Brazo, Espalda, IMUs] = loadDataTest(day);
 
 %% angle BTW Shoulder and Back
-[angM1, angM2, BrazoPos, IMUang] = funcAngOpti2(Brazo, Espalda, IMUs);
+[angM1, angM2, BrazoPos, IMUang, IMUQ] = funcAngOpti2(Brazo, Espalda, IMUs);
 
 %% filtering shoulder data
 [fk, f] = funcFilter(angM2);
@@ -17,4 +17,22 @@ day = '27';
 
 %% Plot data
 flexS = [IMUs.A0 IMUs.A1 IMUs.A2 IMUs.A3 IMUs.A4 IMUs.A5 IMUs.A6 IMUs.A7 IMUs.A8 IMUs.A9];
-plot(flexS)
+plot(flexS);
+hold on
+day = '27';
+[Brazo, Espalda, IMUs] = loadDataTest(day);
+
+%% angle BTW Shoulder and Back
+[angM1, angM2, BrazoPos, IMUang, IMUQ] = funcAngOpti2(Brazo, Espalda, IMUs);
+
+%% filtering shoulder data
+[fk, f] = funcFilter(angM2);
+
+%plot([angM2, fk', f'])
+
+%% Plot data
+flexS = [IMUs.A0 IMUs.A1 IMUs.A2 IMUs.A3 IMUs.A4 IMUs.A5 IMUs.A6 IMUs.A7 IMUs.A8 IMUs.A9];
+plot(flexS);
+
+
+

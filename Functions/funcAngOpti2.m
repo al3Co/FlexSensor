@@ -1,8 +1,8 @@
-function [angM1, angM2, brazoPos, IMU] = funcAngOpti2(BRAZO, ESPALDA, FLEX_DATA)
+function [angM1, angM2, brazoPos, IMU, IMUQ] = funcAngOpti2(BRAZO, ESPALDA, FLEX_DATA)
 %% IMU to angle
 [r1, r2, r3] = quat2angle([FLEX_DATA.Quat1, FLEX_DATA.Quat2, FLEX_DATA.Quat3, FLEX_DATA.Quat4], 'XYZ');
 IMU = [r1 r2 r3];
-
+IMUQ = [FLEX_DATA.Quat1, FLEX_DATA.Quat2, FLEX_DATA.Quat3, FLEX_DATA.Quat4];
 %% preparing data
 BRAZO = deg2rad(BRAZO);
 ESPALDA = deg2rad(ESPALDA);
