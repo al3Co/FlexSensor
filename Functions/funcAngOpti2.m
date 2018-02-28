@@ -1,4 +1,4 @@
-function [angM1, angM2, IMU] = funcAngOpti2(BRAZO, ESPALDA, FLEX_DATA)
+function [angM1, angM2, brazoPos, IMU] = funcAngOpti2(BRAZO, ESPALDA, FLEX_DATA)
 %% IMU to angle
 [r1, r2, r3] = quat2angle([FLEX_DATA.Quat1, FLEX_DATA.Quat2, FLEX_DATA.Quat3, FLEX_DATA.Quat4], 'XYZ');
 IMU = [r1 r2 r3];
@@ -13,7 +13,7 @@ B = cat(4,ESPALDA(:,1),ESPALDA(:,2),ESPALDA(:,3));  % Ditto
 C = cross(A,B,4);                                   % Take the cross products there.
 angM1 = atan2(sqrt(dot(C,C,4)),dot(A,B,4));          % calculate angle
 
-%% Metod 2
+%% Method 2
 % Parameters
 length1 = 1;
 length2 = 1;
@@ -32,5 +32,8 @@ angM2 = [];
 for i = 1:length(xV1)
     angM2(i,:) = subspace([xV1(i);yV1(i);zV1(i)],[xV2(i);yV2(i);zV2(i)])*2;
 end
+%% Method 3
+
+brazoPos = [xV1, yV1, zV1];
 
 end

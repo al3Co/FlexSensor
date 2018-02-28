@@ -1,4 +1,5 @@
-function fk = funcFilter(ang)
+function [fk, f] = funcFilter(ang)
+%% KF
 clear s
 s.x = 10;
 s.A = 1;
@@ -22,4 +23,11 @@ for t=1:length(ang)
    s(end+1)=kalmanf(s(end)); % perform a Kalman filter iteration
 end
 fk = [s(2:end).x];
+
+%% Poly
+x = 1:length(ang);
+y = fk;
+[p,~,mu] = polyfit(x, y, 100);
+f = polyval(p,x,[],mu);
+
 end
