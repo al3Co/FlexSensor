@@ -16,11 +16,11 @@ day = '27';
 
 %% ANN Feedforward Neural Network
 % feed
-X = [IMUs.A0 IMUs.A1 IMUs.A2 IMUs.A3 IMUs.A4 IMUs.A5 IMUs.A6 IMUs.A7 IMUs.A8 IMUs.A9 IMUang]'; % INPUTS
+X = [IMUs.A0 IMUs.A1 IMUs.A2 IMUs.A3 IMUs.A4 IMUs.A5 IMUs.A6 IMUs.A7 IMUs.A8 IMUs.A9 ]'; % INPUTS
 % T = [f']';
-T = [Brazo]';
+T = [IMUang]';
 
-net = feedforwardnet(10); % hiddenSizes
+net = cascadeforwardnet(10); % hiddenSizes
 [net,tr] = train(net,X,T);
 % view(net)
 % % performance
