@@ -4,7 +4,7 @@ clear
 clc
 
 %% Data
-day = '27';
+day = '26';
 [Brazo, Espalda, IMUs] = loadDataTest(day);
 
 %% angle BTW Shoulder and Back
@@ -16,11 +16,11 @@ day = '27';
 
 %% ANN Feedforward Neural Network
 % feed
-X = [IMUs.A0 IMUs.A1 IMUs.A2 IMUs.A3 IMUs.A4 IMUs.A5 IMUs.A6 IMUs.A7 IMUs.A8 IMUs.A9 ]'; % INPUTS
+X = [IMUs.A0 IMUs.A1 IMUs.A3 IMUs.A4]'; % INPUTS
 % T = [f']';
 T = [IMUang]';
 
-net = cascadeforwardnet(10); % hiddenSizes
+net = feedforwardnet(10); % hiddenSizes
 [net,tr] = train(net,X,T);
 % view(net)
 % % performance
@@ -35,11 +35,11 @@ accuracy = max(abs(y-y2));
 
 %% comp
 
-load('allData26.mat')
-
-IMUdata26 = [IMUs26.A0 IMUs26.A1 IMUs26.A2 IMUs26.A3 IMUs26.A4 IMUs26.A5 IMUs26.A6 IMUs26.A7 IMUs26.A8 IMUs26.A9];
-[angM1C, angM2C, brazoPosC, IMUangC] = funcAngOpti2(Brazo26, Espalda26, IMUs26);
-[fkC, fC] = funcFilter(angM2C);
-
-y3 = ANN_SensF_vs_IMU_Fcn(IMUdata26');
-accuracy2 = max(abs(fC-y3));
+% load('allData26.mat')
+% 
+% IMUdata26 = [IMUs26.A0 IMUs26.A1 IMUs26.A2 IMUs26.A3 IMUs26.A4 IMUs26.A5 IMUs26.A6 IMUs26.A7 IMUs26.A8 IMUs26.A9];
+% [angM1C, angM2C, brazoPosC, IMUangC] = funcAngOpti2(Brazo26, Espalda26, IMUs26);
+% [fkC, fC] = funcFilter(angM2C);
+% 
+% y3 = ANN_SensF_vs_IMU_Fcn(IMUdata26');
+% accuracy2 = max(abs(fC-y3));
