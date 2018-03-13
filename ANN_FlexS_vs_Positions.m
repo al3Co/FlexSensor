@@ -6,7 +6,7 @@ clc
 %% Data
 % day = '27';
 % [Brazo, Espalda, IMUs] = loadDataTest(day);
-load('26B_Match.mat');
+load('27PI_Match.mat');
 
 %% angle BTW Shoulder and Back
 %[angM1, angM2, brazoPos, IMUang, IMUQ] = funcAngOpti2(Brazo, Espalda, IMUs);
@@ -22,7 +22,7 @@ X = [tableSensorsData.A0 tableSensorsData.A1 tableSensorsData.A2 tableSensorsDat
     tableSensorsData.A5 tableSensorsData.A6 tableSensorsData.A7 tableSensorsData.A8 tableSensorsData.A9]'; % INPUTS
 %T = [Brazo Espalda]';
 %T = [tableMatched.aBrazoX tableMatched.aBrazoY tableMatched.aBrazoZ]';
-T = [tableMatched.aBrazoX tableMatched.aBrazoY tableMatched.aBrazoZ]';
+T = [tableMatched.angBrazoX tableMatched.angBrazoY tableMatched.angBrazoZ]';
 
 net = feedforwardnet(30); % hiddenSizes
 [net,tr] = train(net,X,T);
