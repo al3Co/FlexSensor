@@ -1,4 +1,4 @@
-const int nSensors = 9;   // including zero
+const int nSensors = 5;   // including zero
 
 void setup() {
   Serial.begin(9600);
