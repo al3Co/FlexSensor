@@ -1,7 +1,7 @@
 const int nSensors = 5;   // including zero
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 }
 
 void loop() {
