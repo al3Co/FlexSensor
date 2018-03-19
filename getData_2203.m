@@ -9,6 +9,7 @@ nSens = 6;                      % number of flex Sensor connected for each Ard
 nCount = 1;                     % number of count on loop
 editFieldText = 'tests_22_03';  % file name
 gesture = 'GreenSide';          % kind of gesture to record
+flagIMUData = false;            % sync flag
 
 %% COM port cleaning
 if ~isempty(instrfind)
@@ -91,6 +92,7 @@ while ~KEY_IS_PRESSED
         catch
             disp('Serial Arduino Data error')
         end
+        flagIMUData = false;
     end
     drawnow
 end
@@ -107,7 +109,7 @@ Data = [Sample Hour Min Sec dataIMUs dataArd];
 %% storing
 % formatting
 disp('Storing Data ...')
-%nSens = nSens -1;
+
 format1 = '%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s'; 
 format2 = '%12.0f%12d%12d%12.3f%12.2f%12.6f%12.6f%12.6f%12.6f%12.5f%12.5f%12.5f%12.2f%12.6f%12.6f%12.6f%12.6f%12.5f%12.5f%12.5f';
 numData = 16+1+3+(nSens*numLilys); % 16 IMUs + 1 Sample + 3 Clock + N SensFlex
