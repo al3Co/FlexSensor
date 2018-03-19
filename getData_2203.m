@@ -57,8 +57,8 @@ gcf;
 set(gcf, 'KeyPressFcn', @myKeyPressFcn);
 now = tic;
 while ~KEY_IS_PRESSED
-    dataIMU1 = lpSensor1.getCurrentSensorData();        % get queue IMU1 sensor data
-    dataIMU2 = lpSensor2.getCurrentSensorData();        % get queue IMU2 sensor data
+    dataIMU1 = lpSensor1.getQueueSensorData();        % get queue IMU1 sensor data
+    dataIMU2 = lpSensor2.getQueueSensorData();        % get queue IMU2 sensor data
     % Sync Method
     if (~isempty(dataIMU1)) && (~isempty(dataIMU2))
         flagIMUData = true;
