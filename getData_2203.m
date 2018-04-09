@@ -100,7 +100,7 @@ while ~KEY_IS_PRESSED
 end
 time = toc(now);
 speed = nCount/time;
-fprintf('Count: %d time: %f speed: %f\n',nCount, time, speed);
+fprintf('Count: %d time: %f avg speed: %f\n',nCount, time, speed);
 
 %% preparing vectors
 Hour = clockT(:,4);
