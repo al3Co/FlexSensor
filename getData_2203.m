@@ -4,12 +4,12 @@ clear
 clc
 %% principal parameters
 numIMUS = 2;                    % number of IMUS connected
-numLilys = 2;                   % number of Ard connected
-nSens = 6;                      % number of flex Sensor connected for each Ard
+numLilys = 3;                   % number of Ard connected
+nSens = 5;                      % number of flex Sensor connected for each Ard
 nCount = 1;                     % number of count on loop
-editFieldText = 'tests_22_03';  % file name
+editFieldText = 'tests_11_04';  % file name
 gesture = 'GreenSide';          % kind of gesture to record
-flagIMUData = false;            % sync flag
+flagIMUData = false;            % IMU sync flag
 
 %% COM port cleaning
 if ~isempty(instrfind)
@@ -19,9 +19,9 @@ end
 
 %% Arduinos
 disp('Arduinos ...')
-ardPorts = [{'COM7'} {'COM5'} {'COM8'} {'COM9'} {'COM10'}];
+ardPorts = [{'COM8'} {'COM9'} {'COM10'}];
 for i=1:numLilys
-    arduinos(i,:) = serial(ardPorts(i),'BaudRate',115200);
+    arduinos(i,:) = serial(ardPorts(i),'BaudRate',9600);
     fopen(arduinos(i));
     flushinput(arduinos(i));
 end
@@ -32,6 +32,7 @@ IMUPorts = [{'COM3'} {'COM4'}]; % COM Ports to which IMUs are connected
 baudrate = 921600;              % rate at which information is transferred
 lpSensor1 = lpms();             % object lpms API sensor 1 given by LPMS
 lpSensor2 = lpms();             % object lpms API sensor 2 given by LPMS
+% connecting
 if ( ~lpSensor1.connect(IMUPorts(1), baudrate) || ~lpSensor2.connect(IMUPorts(2), baudrate) )
     disp('Sensors not connected')
     return 
@@ -50,7 +51,7 @@ for nSen = 1: nSens
     end
 end
 
-%% reading
+%% reading method
 disp('PRESS A KEY TO STOP READING, DO NOT CLOSE THE WINDOW UNTIL THE END')
 global KEY_IS_PRESSED
 KEY_IS_PRESSED = 0;
@@ -87,6 +88,7 @@ while ~KEY_IS_PRESSED
             for i=1:numLilys
                 dataArd(nCount,startingData:1:(nSens*i)) = fscanf(arduinos(i),formatID);
                 startingData = startingData + nSens;
+                drawnow
             end
             nCount = nCount +1;
         catch
@@ -154,4 +156,4 @@ clear arduinos
 if (lpSensor1.disconnect() && lpSensor2.disconnect())
     disp('Sensors disconnected')
 end
-disp('Done!') 
+disp('Done!')
