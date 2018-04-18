@@ -1,4 +1,4 @@
-%% 19.03.18 Reading Flex sensor and 2 IMU sensors
+%% 19.03.18 Reading X Flex sensor Y Lilys and Z IMU sensors
 close all
 clear
 clc
