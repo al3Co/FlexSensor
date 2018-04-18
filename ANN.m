@@ -11,7 +11,7 @@ y = net(X);
 perf = perform(net,y,T);
 
 %% generate ANN Function
-funcName = ['ANN' '_' num2str(day) '_' num2str(test) '_' num2str(kind) '_Fnc'];
+funcName = ['ann' '_' num2str(day) '_' num2str(test) '_' num2str(kind) '_Fnc'];
 genFunction(net, funcName);
 eval(['y2 = ',funcName,'(X);']);
 accuracy = max(abs(y-y2));
