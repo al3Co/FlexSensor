@@ -10,19 +10,19 @@ function [input, target] = dataToRNN(WorkSpace, option)
         case 1
             target = [WorkSpace.angBrazoX WorkSpace.angBrazoY WorkSpace.angBrazoZ];
         case 2
-            input = [input WorkSpace.Quat1 WorkSpace.Quat2 WorkSpace.Quat3 WorkSpace.Quat4];
+            input = [input WorkSpace.Quat2_1 WorkSpace.Quat2_2 WorkSpace.Quat2_3 WorkSpace.Quat2_4];
             target = [WorkSpace.angBrazoX WorkSpace.angBrazoY WorkSpace.angBrazoZ];
         case 3
-            input = [WorkSpace.Quat1 WorkSpace.Quat2 WorkSpace.Quat3 WorkSpace.Quat4];
+            input = [WorkSpace.Quat2_1 WorkSpace.Quat2_2 WorkSpace.Quat2_3 WorkSpace.Quat2_4];
             target = [WorkSpace.angBrazoX WorkSpace.angBrazoY WorkSpace.angBrazoZ];
         case 4
             input = [WorkSpace.A0 WorkSpace.A1 WorkSpace.A2 WorkSpace.A3]; % TODO: PCA analysis
             target = [WorkSpace.angBrazoX WorkSpace.angBrazoY WorkSpace.angBrazoZ];
         case 5
-            target = [input WorkSpace.Quat1 WorkSpace.Quat2 WorkSpace.Quat3 WorkSpace.Quat4];
+            target = [WorkSpace.Quat2_1 WorkSpace.Quat2_2 WorkSpace.Quat2_3 WorkSpace.Quat2_4];
         case 6
             input = [WorkSpace.A0 WorkSpace.A1 WorkSpace.A2 WorkSpace.A3]; % TODO: PCA analysis
-            target = [input WorkSpace.Quat1 WorkSpace.Quat2 WorkSpace.Quat3 WorkSpace.Quat4];
+            target = [WorkSpace.Quat2_1 WorkSpace.Quat2_2 WorkSpace.Quat2_3 WorkSpace.Quat2_4];
         otherwise
             disp('No option valid')
             target = [];
