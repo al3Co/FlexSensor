@@ -2,12 +2,9 @@ function [WorkSpace] = loadWSFunc(kindOfData)
 % load data with analysis characteristics
 % [0]All, [1]COMBO, [2]CRUZEXT, [3]CRUZINT, [4]ELEFRONT, [5]LATERAL, [6]ROTZ
     switch kindOfData
-        case 0
-            name = 'All';
-            WorkSpace = extractData(name);
         case 1
-            name = 'combo';
-            WorkSpace = extractData(name);
+            load 'comboAll.mat' comboAll;
+            WorkSpace = comboAll;
         case 2
             load 'cruzadoextAll.mat' cruzadoextAll;
             WorkSpace = cruzadoextAll;
@@ -15,16 +12,20 @@ function [WorkSpace] = loadWSFunc(kindOfData)
             load 'cruzadointAll.mat' cruzadointAll;
             WorkSpace = cruzadointAll;
         case 4
-            name = 'elevFrontal';
-            WorkSpace = extractData(name);
+            load 'frontalAll.mat' frontalAll;
+            WorkSpace = frontalAll;
         case 5
             load 'lateralAll.mat' lateralAll;
             WorkSpace = lateralAll;
         case 6
-            name = 'rotacionz';
-            WorkSpace = extractData(name);
+            load 'rotacionzAll.mat' rotacionzAll;
+            WorkSpace = rotacionzAll;
+        case 0
+            load 'allData.mat' allData;
+            WorkSpace = allData;
         otherwise
-            WorkSpace = [];
+            name = 'All';
+            WorkSpace = extractData(name);
     end 
 end
 
