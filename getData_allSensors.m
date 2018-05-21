@@ -7,8 +7,8 @@ numIMUS = 2;                    % number of IMUS connected
 numLilys = 3;                   % number of Ard connected
 nSens = 5;                      % number of flex Sensor connected for each Ard
 nCount = 1;                     % number of count on loop
-editFieldText = 'tests_11_04';  % file name
-gesture = 'GreenSide';          % kind of gesture to record
+editFieldText = 'tests_25_04';  % file name
+gesture = 'combo4';          % kind of gesture to record
 flagIMUData = false;            % IMU sync flag
 
 %% COM port cleaning
@@ -19,7 +19,7 @@ end
 
 %% Arduinos
 disp('Arduinos ...')
-ardPorts = [{'COM8'} {'COM9'} {'COM10'}];
+ardPorts = [{'COM10'} {'COM8'} {'COM9'}];
 for i=1:numLilys
     arduinos(i,:) = serial(ardPorts(i),'BaudRate',9600);
     fopen(arduinos(i));

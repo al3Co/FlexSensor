@@ -8,3 +8,4 @@ for i=1:length(yaw)
     funcPlotVector(pitch(i), roll(i), yaw(i))
     % pause(0.1)
 end
+
