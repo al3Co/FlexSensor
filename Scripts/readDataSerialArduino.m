@@ -7,13 +7,13 @@ if ~isempty(instrfind)
     delete(instrfind);
 end
 %% parameters
-arduino=serial('COM7','BaudRate',9600);
+arduino=serial('COM9','BaudRate',9600);
 fopen(arduino);
 flushinput(arduino)
 nTotal = 100;   % samples number
 nCount = 1;     % initial sample
 data = [];      % variable to save data
-nSens = 9;      % number of sensors including zero
+nSens = 5;      % number of sensors including zero
 Sample = [];    % sample stamp
 clockT = [];
 
