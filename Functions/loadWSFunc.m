@@ -20,6 +20,9 @@ function [WorkSpace] = loadWSFunc(kindOfData)
         case 6
             load 'rotacionzAll.mat' rotacionzAll;
             WorkSpace = rotacionzAll;
+        case 7
+            load 'allFixed.mat' allFixed;
+            WorkSpace = allFixed;
         case 0
             load 'allData.mat' allData;
             WorkSpace = allData;
