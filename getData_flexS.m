@@ -11,7 +11,7 @@ end
 
 %% parameters
 arduino = serial('COM9','BaudRate',9600);
-nSens = 6;      % number of sensors including zero
+nSens = 6;      % number of sensors
 nTotal = 100;   % samples number
 nCount = 1;     % initial sample
 data = [];      % variable to save data
