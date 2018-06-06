@@ -4,7 +4,7 @@ close all
 clc
 
 %% data
-[kindOfData, kindOfTest] = usrDataFunc ();
+[kindOfData, kindOfTest] = usrDataFunc();
 [WorkSpace] = loadWSFunc(kindOfData);
 [input, target] = dataToRNN(WorkSpace, kindOfTest);
 plot(input)
