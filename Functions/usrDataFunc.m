@@ -1,9 +1,9 @@
 function [kindOfData, kindOfTest] = usrDataFunc ()
 % ask for kind of analysis and data
     while true
-        prompt = ('Test: [0]All, [1]COMBO, [2]CRUZEXT, [3]CRUZINT, [4]ELEFRONT, [5]LATERAL, [6]ROTZ: ');
+        prompt = ('Test: [0]All, [1]COMBO, [2]CRUZEXT, [3]CRUZINT, [4]ELEFRONT, [5]LATERAL, [6]ROTZ, [7]Fixed: ');
         kindOfData = input(prompt);
-        if kindOfData >= 0 && kindOfData <= 6
+        if kindOfData >= 0 && kindOfData <= 7
             break
         end
     end
