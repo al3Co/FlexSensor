@@ -1,6 +1,6 @@
 %% 21.02.18 Reading Flex sensor data from Arduino UNO.
 close all
-clear
+clear all
 clc
 %% Connection
 a1 = arduino('COM9', 'Mega2560');
