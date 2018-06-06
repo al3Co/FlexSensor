@@ -1,4 +1,4 @@
-%% 21.02.18 Reading Flex sensor data from Arduino UNO
+%% 21.02.18 Reading Flex sensor data from serial port
 close all
 clear
 clc
