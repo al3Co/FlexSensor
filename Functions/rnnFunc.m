@@ -20,9 +20,9 @@ function [performanceTot, y] = rnnFunc(input, target)
     trainFcn = 'trainlm';  % Levenberg-Marquardt backpropagation.
 
     % Create a Nonlinear Autoregressive Network with External Input
-    inputDelays = 1:2;
-    feedbackDelays = 1:2;
-    hiddenLayerSize = 15;
+    inputDelays = 1:1;
+    feedbackDelays = 1:1;
+    hiddenLayerSize = 10;
     net = narxnet(inputDelays,feedbackDelays,hiddenLayerSize,'open',trainFcn);
 
     % Choose Input and Feedback Pre/Post-Processing Functions
