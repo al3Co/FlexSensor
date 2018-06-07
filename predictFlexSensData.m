@@ -60,7 +60,8 @@ calFixVal = calV(:,1);
 % reset parameteres
 sensorInputs = []; 
 nCount = 1;
-
+x = cell(2,0);
+target = [];            % here add initial angle
 disp('Plotting ...')
 start = tic;
 figure('doublebuffer','on', ...
@@ -71,12 +72,20 @@ while double(get(gcf,'CurrentCharacter'))~=27
     % reading data
     try
         serialData = fscanf(arduino,formatID);
+        
         % fix data with calibration
         for num = 1:nSens
             serialData(num) = serialData(num) - calFixVal(num);
         end
         sensorInputs(:,nCount) = serialData;
-        % add 
+        
+        % predict angles
+        xi = {serialData;target};
+        [Y,Xf,Af] = rnn_created_Fnc(x,xi);
+        target = Xf{2,1};
+        [yaw, pitch, roll] = quat2angle(target);
+        funcPlotVectorV2(pitch, roll, yaw)
+        
         nCount = nCount + 1;
     catch
         flushinput(arduino)
