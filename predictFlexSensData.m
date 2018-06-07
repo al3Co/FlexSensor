@@ -61,8 +61,9 @@ calFixVal = calV(:,1);
 sensorInputs = []; 
 nCount = 1;
 x = cell(2,0);
-target = [];            % here add initial angle
-disp('Plotting ...')
+target = [];            % initial angles for first two values
+
+disp('Predicting')
 start = tic;
 figure('doublebuffer','on', ...
        'CurrentCharacter','a', ...
@@ -72,20 +73,23 @@ while double(get(gcf,'CurrentCharacter'))~=27
     % reading data
     try
         serialData = fscanf(arduino,formatID);
-        
-        % fix data with calibration
         for num = 1:nSens
-            serialData(num) = serialData(num) - calFixVal(num);
+            serialData(num) = serialData(num) - calFixVal(num); % fix data with calibration
         end
         sensorInputs(:,nCount) = serialData;
         
         % predict angles
-        xi = {serialData;target};
-        [Y,Xf,Af] = rnn_created_Fnc(x,xi);
-        target = Xf{2,1};
-        [yaw, pitch, roll] = quat2angle(target);
-        funcPlotVectorV2(pitch, roll, yaw)
-        
+        if nCount > 2
+            input = [];         % vector with the last 2 inputs, get from sensor Inputs the last 2 samples
+            [x, xi] = prepareDatatoRNN(input, target);
+            [Y,Xf,Af] = rnn_created_Fnc(x,xi);
+            target = Xf{2,1};
+            [yaw, pitch, roll] = quat2angle(target);
+            funcPlotVectorV2(pitch, roll, yaw)
+
+            % input = [past, new];
+            % target = [past, new];
+        end 
         nCount = nCount + 1;
     catch
         flushinput(arduino)
@@ -95,32 +99,10 @@ while double(get(gcf,'CurrentCharacter'))~=27
     % funcPlotVectorV2(pitch, roll, yaw)
 end
 
-
-
-
-%% on work
-% disp('Predicting')
-% while nCount < nTotal
-%     % reading data
-%     try
-%         serialData = fscanf(arduino,formatID);
-%         % fix data with calibration
-%         for num = 1:length(calibrationValue)
-%             serialData(num) = serialData(num) - calibrationValue(num);
-%         end
-%         sensorInputs(:,nCount) = serialData;
-%         Sample(:,nCount) = nCount;
-%         clockT(:,nCount) = clock;
-%         nCount = nCount + 1;
-%     catch
-%         flushinput(arduino)
-%         disp('Serial data error')
-%         dataFlag = false;
-%     end
-%     % plot data
-%     funcPlotMultFlexSens(sensorInputs, nTotal)
-% end
-
 %% closing
+time = toc(start);
+fprintf('Time:  %f\n',time);
+fprintf('Speed: %f samples/second\n',(nCount/time));
+close all
 fclose(arduino);
 
