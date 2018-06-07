@@ -92,7 +92,7 @@ while double(get(gcf,'CurrentCharacter'))~=27
         disp('Serial data error')
     end
     % plot data
-    % function to plot data
+    % funcPlotVectorV2(pitch, roll, yaw)
 end
 
 
