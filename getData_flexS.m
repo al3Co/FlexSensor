@@ -14,10 +14,7 @@ arduino = serial('COM9','BaudRate',9600);
 nSens = 6;      % number of sensors
 nTotal = 100;   % samples number
 nCount = 1;     % initial sample
-data = [];      % variable to save data
-Sample = [];    % sample stamp
 dataFlag = true;
-clockT = [];
 fopen(arduino);
 flushinput(arduino)
 
@@ -43,7 +40,6 @@ while double(get(gcf,'CurrentCharacter'))~=27
     % keep plot new data at the end
     if nCount == nTotal
         voltageInputs(:,1) = [];    % delete first column
-        clockT(:,1) = [];
     elseif dataFlag
         nCount = nCount + 1;
     end
@@ -51,8 +47,6 @@ while double(get(gcf,'CurrentCharacter'))~=27
     try
         serialData = fscanf(arduino,formatID);
         voltageInputs(:,nCount) = serialData;
-        Sample(:,nCount) = nCount;
-        clockT(:,nCount) = clock;
         dataFlag = true;
     catch
         flushinput(arduino)
