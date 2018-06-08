@@ -12,7 +12,7 @@ end
 %% initial parameters
 arduino = serial('COM9','BaudRate',9600);
 nSens = 6;                      % number of sensors
-nCalSamples = 500;              % samples number
+nCalSamples = 100;              % samples number
 nCount = 1;                     % initial sample
 calV = zeros(nSens,nCalSamples);% calibration matrix
 fopen(arduino);
@@ -46,22 +46,28 @@ while nCount <= nCalSamples
         calV(n,:) = ones(1,nCalSamples)*(min(sensorInputs(n,:)));
     end
     % plot data
-    plot(1:nCalSamples,[sensorInputs; calV])
+    plot(1:nCalSamples,sensorInputs)
     grid on;
     drawnow
 end
 time = toc(start);
 fprintf('Time:  %f\n',time);
 fprintf('Speed: %f samples/second\n',(nCount/time));
-close all
+% fclose(arduino);
+% close all
+
 calFixVal = calV(:,1);
 
 %% predicting
 % reset parameteres
+% fopen(arduino);
+% flushinput(arduino)
+
 sensorInputs = []; 
-nCount = 1;
+nCount = 0;
 x = cell(2,0);
-target = [];            % initial angles for first two values
+targetVec = [0.609465,-0.304610,0.496887,-0.537465; 
+          0.609778,-0.304149,0.497088,-0.537185];            % initial angles for first two values
 
 disp('Predicting')
 start = tic;
@@ -73,36 +79,36 @@ while double(get(gcf,'CurrentCharacter'))~=27
     % reading data
     try
         serialData = fscanf(arduino,formatID);
-        for num = 1:nSens
-            serialData(num) = serialData(num) - calFixVal(num); % fix data with calibration
-        end
-        sensorInputs(:,nCount) = serialData;
-        
-        % predict angles
-        if nCount > 2
-            input = [];         % vector with the last 2 inputs, get from sensor Inputs the last 2 samples
-            [x, xi] = prepareDatatoRNN(input, target);
-            [Y,Xf,Af] = rnn_created_Fnc(x,xi);
-            target = Xf{2,1};
-            [yaw, pitch, roll] = quat2angle(target);
-            funcPlotVectorV2(pitch, roll, yaw)
-
-            % input = [past, new];
-            % target = [past, new];
-        end 
         nCount = nCount + 1;
     catch
         flushinput(arduino)
         disp('Serial data error')
     end
+    % fix data with calibration
+    for num = 1:nSens
+        serialData(num) = serialData(num) - calFixVal(num); 
+    end
+    sensorInputs(nCount,:) = serialData;
+    % predict angles
+    if nCount > 2
+        % get from sensorInputs the last n samples
+        input = sensorInputs(end-1:end,1:nSens);
+        target = targetVec(end-1:end,1:4);
+        % prepare data to rnn
+        xi = [tonndata(input,false,false); tonndata(target,false,false)];
+        % rnn function
+        [Y,Xf,Af] = rnn_created_Fnc(x,xi);
+        targetVec(nCount,:) = Xf{2,2};
+        [yaw, pitch, roll] = quat2angle(targetVec(end,1:4));
+        funcPlotVectorV2(pitch, roll, yaw)
+    end 
     % plot data
-    % funcPlotVectorV2(pitch, roll, yaw)
 end
 
 %% closing
 time = toc(start);
 fprintf('Time:  %f\n',time);
 fprintf('Speed: %f samples/second\n',(nCount/time));
-close all
 fclose(arduino);
+close all
 
