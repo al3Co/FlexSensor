@@ -1,4 +1,4 @@
-%% 19.03.18 Reading X Flex sensor Y Lilys and Z IMU sensors
+%% 19.03.18 Reading X Flex sensor Y Lilys and Z IMU sensors data and save it on file
 % ### Known Issues:
 % - Serial Interrupt routine blocks main processing thread when transferring at data rate > 100Hz 
 % - 16bit data parsing is not yet implemented
@@ -90,10 +90,13 @@ while ~KEY_IS_PRESSED
     end
     % Synchronized data
     if flagIMUData
+        % reading IMUs data
         Sample(nCount,:) = nCount;
         clockT(nCount,:) = clock;
         dataIMUs(nCount,:) = [dataIMU1.timestamp dataIMU1.quat dataIMU1.acc dataIMU1.gyr...
                               dataIMU2.timestamp dataIMU2.quat dataIMU2.acc dataIMU2.gyr];
+                          
+        % reading Serial data
         try
             startingData = 1;
             for i=1:numLilys
