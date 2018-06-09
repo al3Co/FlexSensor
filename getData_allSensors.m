@@ -1,4 +1,15 @@
 %% 19.03.18 Reading X Flex sensor Y Lilys and Z IMU sensors
+% ### Known Issues:
+% - Serial Interrupt routine blocks main processing thread when transferring at data rate > 100Hz 
+% - 16bit data parsing is not yet implemented
+% - For more than one sensor, change the Transmission rate in such a way that does not exceed 100Hz (Use LpCVP conv. tool and LpmsControl software)
+% 
+% ### LpVCPConversionTool:
+% https://bitbucket.org/lpresearch/openmat/downloads/LpVCPConversionTool-1.0.0-Setup.exe
+% 
+% ### Drivers:
+% https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers
+
 close all
 clear
 clc
