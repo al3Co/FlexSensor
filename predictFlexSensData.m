@@ -10,11 +10,12 @@ if ~isempty(instrfind)
 end
 
 %% initial parameters
-arduino = serial('COM9','BaudRate',9600);
+arduino = serial('/dev/tty.usbserial-FTG4DJZ7','BaudRate',9600);
 nSens = 6;                      % number of sensors
 nCalSamples = 100;              % samples number
 nCount = 1;                     % initial sample
 calV = zeros(nSens,nCalSamples);% calibration matrix
+kindOfPrediction = true;              % kind of prediction true -> ann, false -> rnn
 fopen(arduino);
 flushinput(arduino)
 
@@ -53,15 +54,10 @@ end
 time = toc(start);
 fprintf('Time:  %f\n',time);
 fprintf('Speed: %f samples/second\n',(nCount/time));
-% fclose(arduino);
-% close all
 
 calFixVal = calV(:,1);
 
 %% predicting
-% reset parameteres
-% fopen(arduino);
-% flushinput(arduino)
 
 sensorInputs = []; 
 nCount = 0;
@@ -77,32 +73,35 @@ figure('doublebuffer','on', ...
 set(gcf,'WindowStyle','normal');
 while double(get(gcf,'CurrentCharacter'))~=27
     % reading data
+    lastwarn('') % Clear last warning message
     try
         serialData = fscanf(arduino,formatID);
+        flagData = true;
+        [warnMsg, warnId] = lastwarn;
         nCount = nCount + 1;
     catch
+        flagData = false;
         flushinput(arduino)
         disp('Serial data error')
     end
-    % fix data with calibration
-    for num = 1:nSens
-        serialData(num) = serialData(num) - calFixVal(num); 
+    
+    if flagData && isempty(warnMsg)
+        % fix data with calibration
+        for num = 1:nSens
+            serialData(num) = serialData(num) - calFixVal(num); 
+        end
+        sensorInputs(nCount,:) = serialData;
+
+        % predict angles
+        if nCount > 2
+            [quaternions] = anglePred_Func(sensorInputs, targetVec, kindOfPrediction);
+            prediction(nCount,:) = quaternions;
+            disp(quaternions)
+            %  plot data
+            [yaw, pitch, roll] = quat2angle(quaternions);
+            funcPlotVectorV2(pitch, roll, yaw)
+        end
     end
-    sensorInputs(nCount,:) = serialData;
-    % predict angles
-    if nCount > 2
-        % get from sensorInputs the last n samples
-        input = sensorInputs(end-1:end,1:nSens);
-        target = targetVec(end-1:end,1:4);
-        % prepare data to rnn
-        xi = [tonndata(input,false,false); tonndata(target,false,false)];
-        % rnn function
-        [Y,Xf,Af] = rnn_created_Fnc(x,xi);
-        targetVec(nCount,:) = Xf{2,2};
-        [yaw, pitch, roll] = quat2angle(targetVec(end,1:4));
-        funcPlotVectorV2(pitch, roll, yaw)
-    end 
-    % plot data
 end
 
 %% closing
