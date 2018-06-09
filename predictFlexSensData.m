@@ -78,6 +78,7 @@ while double(get(gcf,'CurrentCharacter'))~=27
         serialData = fscanf(arduino,formatID);
         flagData = true;
         [warnMsg, warnId] = lastwarn;
+        [m,~] = size(serialData);
         nCount = nCount + 1;
     catch
         flagData = false;
@@ -85,7 +86,7 @@ while double(get(gcf,'CurrentCharacter'))~=27
         disp('Serial data error')
     end
     
-    if flagData && isempty(warnMsg)
+    if flagData && isempty(warnMsg) && m == nSens
         % fix data with calibration
         for num = 1:nSens
             serialData(num) = serialData(num) - calFixVal(num); 
