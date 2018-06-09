@@ -7,8 +7,8 @@ numIMUS = 2;                    % number of IMUS connected
 numLilys = 3;                   % number of Ard connected
 nSens = 5;                      % number of flex Sensor connected for each Ard
 nCount = 1;                     % number of count on loop
-editFieldText = 'tests_25_04';  % file name
-gesture = 'combo4';          % kind of gesture to record
+kindOfTest = 'testsDate';       % file name
+gesture = 'gesture';            % kind of gesture to record
 flagIMUData = false;            % IMU sync flag
 
 %% COM port cleaning
@@ -81,8 +81,8 @@ while ~KEY_IS_PRESSED
     if flagIMUData
         Sample(nCount,:) = nCount;
         clockT(nCount,:) = clock;
-        dataIMUs(nCount,:) = [dataIMU1.timestamp dataIMU1.quat dataIMU1.acc ...
-                              dataIMU2.timestamp dataIMU2.quat dataIMU2.acc];
+        dataIMUs(nCount,:) = [dataIMU1.timestamp dataIMU1.quat dataIMU1.acc dataIMU1.gyr...
+                              dataIMU2.timestamp dataIMU2.quat dataIMU2.acc dataIMU2.gyr];
         try
             startingData = 1;
             for i=1:numLilys
@@ -112,23 +112,25 @@ Data = [Sample Hour Min Sec dataIMUs dataArd];
 % formatting
 disp('Storing Data ...')
 
-format1 = '%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s'; 
-format2 = '%12.0f%12d%12d%12.3f%12.2f%12.6f%12.6f%12.6f%12.6f%12.5f%12.5f%12.5f%12.2f%12.6f%12.6f%12.6f%12.6f%12.5f%12.5f%12.5f';
-numData = 16+1+3+(nSens*numLilys); % 16 IMUs + 1 Sample + 3 Clock + N SensFlex
+formatTitles = '%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s'; 
+formatData = '%12d%12d%12d%12.3f%12.2f%12.6f%12.6f%12.6f%12.6f%12.5f%12.5f%12.5f%12.5f%12.5f%12.5f%12.2f%12.6f%12.6f%12.6f%12.6f%12.5f%12.5f%12.5f%12.5f%12.5f%12.5f';
+numData = 22+1+3+(nSens*numLilys); % 22 IMUs + 1 Sample + 3 Clock + N SensFlex
 str = strings([1,(numData)]);
 str(1) = 'Sample'; str(2) = 'Hour'; str(3) = 'Minute'; str(4) = 'Sec';
-str(5) = 'Stamp'; str(6) = 'Quat1'; str(7) = 'Quat2'; str(8) = 'Quat3'; str(9) = 'Quat4';
+str(5) = 'Stamp'; str(6) = 'Quat1_1'; str(7) = 'Quat1_2'; str(8) = 'Quat1_3'; str(9) = 'Quat1_4';
 str(10) = 'AccX'; str(11) = 'AccY'; str(12) = 'AccZ';
-str(13) = 'Stamp2'; str(14) = 'Quat2_1'; str(15) = 'Quat2_2'; str(16) = 'Quat2_3'; str(17) = 'Quat2_4';
-str(18) = 'Acc2_X'; str(19) = 'Acc2_Y'; str(20) = 'Acc2_Z';
+str(13) = 'gyrX'; str(14) = 'gyrY'; str(15) = 'gyrZ';
+str(16) = 'Stamp2'; str(17) = 'Quat2_1'; str(18) = 'Quat2_2'; str(19) = 'Quat2_3'; str(20) = 'Quat2_4';
+str(21) = 'Acc2X'; str(22) = 'Acc2Y'; str(23) = 'Acc2Z';
+str(24) = 'gyr2X'; str(25) = 'gyr2Y'; str(26) = 'gyr2Z';
 for nSen = 1: (nSens*numLilys)
     if nSen < (nSens*numLilys)
-        format1 = [format1 , '%12s'];
-        format2 = [format2 , '%12.2f'];
+        formatTitles = [formatTitles , '%12s'];
+        formatData = [formatData , '%12.2f'];
         str(nSen+(numData-(nSens*numLilys))) = ['A', int2str(nSen-1)];
     else
-        format1 = [format1 , '%12s\r\n'];
-        format2 = [format2 , '%12.2f\r\n'];
+        formatTitles = [formatTitles , '%12s\r\n'];
+        formatData = [formatData , '%12.2f\r\n'];
         str(nSen+(numData-(nSens*numLilys))) = ['A', int2str(nSen-1)];
     end
 end
@@ -137,17 +139,17 @@ end
 folderName = 'testsData';
 [status, msg, msgID] = mkdir(folderName);
 dir = [pwd, '\',folderName];
-S = char(datetime('now','Format','yyyy-MM-dd''T''HHmmssSSS'));
-fileName = [editFieldText, '_', gesture, '_', S,'.txt'];
+dateS = char(datetime('now','Format','yyyy-MM-dd''T''HHmmssSSS'));
+fileName = [kindOfTest, '_', gesture, '_', dateS,'.txt'];
 
 % writing file
 fileID = fopen(fullfile(dir,fileName),'wt');
-fprintf(fileID, format1, str); % col names
-fprintf(fileID, format2, Data');
+fprintf(fileID, formatTitles, str); % col names
+fprintf(fileID, formatData, Data');
 fclose(fileID);
 
 % storing Workspace
-fileName = [editFieldText, '_', gesture, '_', S,'.mat'];
+fileName = [kindOfTest, '_', gesture, '_', dateS,'.mat'];
 save(fileName,'Data')
 
 %% disconnecting
