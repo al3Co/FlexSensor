@@ -10,10 +10,11 @@ if ~isempty(instrfind)
 end
 
 %% parameters
-arduino = serial('COM9','BaudRate',9600);
+arduino = serial('/dev/tty.usbserial-FTG4DJZ7','BaudRate',9600);
 nSens = 6;      % number of sensors
-nTotal = 100;   % samples number
-nCount = 1;     % initial sample
+nTotal = 100;   % max samples number to plot
+nCount = 1;     % initial sample to plot
+count = 1;      % counter
 dataFlag = true;
 fopen(arduino);
 flushinput(arduino)
@@ -47,6 +48,8 @@ while double(get(gcf,'CurrentCharacter'))~=27
     try
         serialData = fscanf(arduino,formatID);
         voltageInputs(:,nCount) = serialData;
+        serialRawData(count,:) = serialData;
+        count = count + 1;
         dataFlag = true;
     catch
         flushinput(arduino)
@@ -62,3 +65,5 @@ time = toc(start);
 fclose(arduino);
 fprintf('Time:  %f\n',time);
 fprintf('Speed: %f samples per second\n',(nCount/time));
+
+plot(serialRawData)
