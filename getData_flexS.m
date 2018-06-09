@@ -64,6 +64,6 @@ time = toc(start);
 %% closing
 fclose(arduino);
 fprintf('Time:  %f\n',time);
-fprintf('Speed: %f samples per second\n',(nCount/time));
+fprintf('Speed: %f samples per second\n',(count/time));
 
 plot(serialRawData)
