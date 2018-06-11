@@ -15,8 +15,8 @@ clear
 clc
 %% principal parameters
 numIMUS = 2;                    % number of IMUS connected
-numLilys = 3;                   % number of Ard connected
-nSens = 5;                      % number of flex Sensor connected for each Ard
+numLilys = 1;                   % number of Ard connected
+nSens = 6;                      % number of flex Sensor connected for each Ard
 nCount = 1;                     % number of count on loop
 kindOfTest = 'testsDate';       % file name
 gesture = 'gesture';            % kind of gesture to record
@@ -30,7 +30,8 @@ end
 
 %% Arduinos
 disp('Arduinos ...')
-ardPorts = [{'COM10'} {'COM8'} {'COM9'}];
+%ardPorts = [{'COM10'} {'COM8'} {'COM9'}];
+ardPorts = [{'COM9'}];
 for i=1:numLilys
     arduinos(i,:) = serial(ardPorts(i),'BaudRate',9600);
     fopen(arduinos(i));
@@ -39,7 +40,7 @@ end
 
 %% IMU SENSORS
 disp('IMU sensors ...')
-IMUPorts = [{'COM3'} {'COM4'}]; % COM Ports to which IMUs are connected
+IMUPorts = [{'COM4'} {'COM6'}]; % COM Ports to which IMUs are connected
 baudrate = 921600;              % rate at which information is transferred
 lpSensor1 = lpms();             % object lpms API sensor 1 given by LPMS
 lpSensor2 = lpms();             % object lpms API sensor 2 given by LPMS
@@ -131,9 +132,9 @@ formatData = '%12d%12d%12d%12.3f%12.2f%12.6f%12.6f%12.6f%12.6f%12.5f%12.5f%12.5f
 numData = 22+1+3+(nSens*numLilys); % 22 IMUs + 1 Sample + 3 Clock + N SensFlex
 str = strings([1,(numData)]);
 str(1) = 'Sample'; str(2) = 'Hour'; str(3) = 'Minute'; str(4) = 'Sec';
-str(5) = 'Stamp'; str(6) = 'Quat1_1'; str(7) = 'Quat1_2'; str(8) = 'Quat1_3'; str(9) = 'Quat1_4';
-str(10) = 'AccX'; str(11) = 'AccY'; str(12) = 'AccZ';
-str(13) = 'gyrX'; str(14) = 'gyrY'; str(15) = 'gyrZ';
+str(5) = 'Stamp1'; str(6) = 'Quat1_1'; str(7) = 'Quat1_2'; str(8) = 'Quat1_3'; str(9) = 'Quat1_4';
+str(10) = 'Acc1X'; str(11) = 'Acc1Y'; str(12) = 'Acc1Z';
+str(13) = 'gyr1X'; str(14) = 'gyr1Y'; str(15) = 'gyr1Z';
 str(16) = 'Stamp2'; str(17) = 'Quat2_1'; str(18) = 'Quat2_2'; str(19) = 'Quat2_3'; str(20) = 'Quat2_4';
 str(21) = 'Acc2X'; str(22) = 'Acc2Y'; str(23) = 'Acc2Z';
 str(24) = 'gyr2X'; str(25) = 'gyr2Y'; str(26) = 'gyr2Z';
