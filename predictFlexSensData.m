@@ -10,9 +10,9 @@ if ~isempty(instrfind)
 end
 
 %% initial parameters
-arduino = serial('/dev/tty.usbserial-FTG4DJZ7','BaudRate',9600);
+arduino = serial('COM9','BaudRate',9600);
 nSens = 6;                      % number of sensors
-nCalSamples = 100;              % samples number
+nCalSamples = 500;              % samples number
 nCount = 1;                     % initial sample
 calV = zeros(nSens,nCalSamples);% calibration matrix
 kindOfPrediction = true;              % kind of prediction true -> ann, false -> rnn
@@ -97,7 +97,6 @@ while double(get(gcf,'CurrentCharacter'))~=27
         if nCount > 2
             [quaternions] = anglePred_Func(sensorInputs, targetVec, kindOfPrediction);
             prediction(nCount,:) = quaternions;
-            disp(quaternions)
             %  plot data
             [yaw, pitch, roll] = quat2angle(quaternions);
             funcPlotVectorV2(pitch, roll, yaw)
