@@ -1,0 +1,67 @@
+% function to plot results offline
+% data needed:
+% initial angles [X,Y,Z]
+% angles from results [X,Y,Z]
+% length = 1
+
+L1 = 10; % length
+
+%% add here for loop 
+for rawLoop = 1:length(angN)
+    % from angle and length, get position
+    theta1 = angN(rawLoop,1);
+    theta2 = angN(rawLoop,2);
+    theta3 = angN(rawLoop,3);
+
+    P12 = [0 L1 0]'; % [X Y Z] change arrow direction here
+
+    % from rotation angles get position
+    R10 = [1 0 0;
+        0 cos(theta1) -sin(theta1);
+        0 sin(theta1) cos(theta1)];
+
+    R21 = [cos(theta2) 0 sin(theta2);
+        0 1 0;
+        -sin(theta2) 0 cos(theta2)];
+
+    R32 = [cos(theta3) -sin(theta3) 0;
+        sin(theta3) cos(theta3) 0
+        0 0 1];
+
+    R30 = R10 * R21 * R32;
+    P30 = R30 * P12;        % Position point
+
+    % plot data
+    hold all;
+    grid on;
+    subplot(2,2,1);
+    mArrow3([0 0 0],[P30(1) P30(2) P30(3)], 'facealpha', 0.5, 'color', 'blue', 'stemWidth', 0.02);
+    %set(gca, 'CameraPosition', [6 2 3]);
+    view(3);
+    
+    subplot(2,2,2);
+    hold all;
+    plot([0;P30(1)],[0;P30(2)],'r');
+    view(0,90);
+    
+    subplot(2,2,3);
+    hold all;
+    plot([0;P30(1)],[0;P30(3)],'r');
+    view(0,90);
+    
+    subplot(2,2,4);
+    hold all;
+    plot([0;P30(2)],[0;P30(3)],'r');
+    view(0,90);
+    if rawLoop == 1
+       pause(2)
+    else
+        pause(0.001)
+    end
+end
+
+disp('done!')
+
+
+
+
