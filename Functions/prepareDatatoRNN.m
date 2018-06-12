@@ -23,7 +23,7 @@ net = narxnet(inputDelays,feedbackDelays,hiddenLayerSize,'open',trainFcn);
 net.inputs{1}.processFcns = {'removeconstantrows','mapminmax'};
 net.inputs{2}.processFcns = {'removeconstantrows','mapminmax'};
 
-[x,xi,ai,t] = preparets(net,X,{},T);
+[x,xi,~,~] = preparets(net,X,{},T);
 end
 
 
