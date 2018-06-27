@@ -14,7 +14,6 @@ close all
 clear
 clc
 %% principal parameters
-numIMUS = 2;                    % number of IMUS connected
 numLilys = 1;                   % number of Ard connected
 nSens = 6;                      % number of flex Sensor connected for each Ard
 nCount = 1;                     % number of count on loop
@@ -41,16 +40,25 @@ end
 %% IMU SENSORS
 disp('IMU sensors ...')
 IMUPorts = [{'COM4'} {'COM6'}]; % COM Ports to which IMUs are connected
+[~,numIMUS] = size(IMUPorts);      % num of IMUS connected
 baudrate = 921600;              % rate at which information is transferred
-lpSensor1 = lpms();             % object lpms API sensor 1 given by LPMS
-lpSensor2 = lpms();             % object lpms API sensor 2 given by LPMS
-% connecting
-if ( ~lpSensor1.connect(IMUPorts(1), baudrate) || ~lpSensor2.connect(IMUPorts(2), baudrate) )
-    disp('Sensors not connected')
-    return 
+
+% create nIMUs instances
+for imu = 1:numIMUS
+    lpSensor(imu) = lpms();
 end
-lpSensor1.setStreamingMode();
-lpSensor2.setStreamingMode();
+
+% connecting
+for imu = 1:numIMUS
+    if ( ~lpSensor(imu).connect(IMUPorts(imu), baudrate) )
+        return 
+    end
+end
+
+% Set streaming mode
+for imu = 1:numIMUS
+    lpSensor(imu).setStreamingMode();
+end
 disp('All set up, starting reading ...')
 
 %% format serial incoming data
@@ -71,8 +79,10 @@ gcf;
 set(gcf, 'KeyPressFcn', @myKeyPressFcn);
 now = tic;
 while ~KEY_IS_PRESSED
-    dataIMU1 = lpSensor1.getQueueSensorData();        % get queue IMU1 sensor data
-    dataIMU2 = lpSensor2.getQueueSensorData();        % get queue IMU2 sensor data
+    for imu = 1:numIMUS
+        dataIMU1 = lpSensor(imu).getQueueSensorData();        % get queue IMU1 sensor data
+        dataIMU2 = lpSensor(imu).getQueueSensorData();        % get queue IMU2 sensor data
+    end
     % Sync Method
     if (~isempty(dataIMU1)) && (~isempty(dataIMU2))
         flagIMUData = true;
@@ -170,7 +180,11 @@ save(fileName,'Data')
 %% disconnecting
 disp('Disconnecting')
 clear arduinos
-if (lpSensor1.disconnect() && lpSensor2.disconnect())
-    disp('Sensors disconnected')
+% disconnecting
+for imu = 1:numIMUS
+    if (lpSensor(imu).disconnect())
+        disp('sensor disconnected')
+        %fprinf
+    end
 end
 disp('Done!')
