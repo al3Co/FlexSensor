@@ -10,7 +10,7 @@ if ~isempty(instrfind)
 end
 
 %% parameters
-arduino = serial('/dev/tty.usbserial-FTG4DJZ7','BaudRate',9600);
+arduino = serial('/dev/ttyUSB0','BaudRate',9600);
 nSens = 6;      % number of sensors
 nTotal = 100;   % max samples number to plot
 nCount = 1;     % initial sample to plot

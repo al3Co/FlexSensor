@@ -16,7 +16,7 @@ clc
 %% principal parameters
 numLilys = 1;                   % number of Ard connected
 nSens = 6;                      % number of flex Sensor connected for each Ard
-nCount = 1;                     % number of count on loop
+nCount = 1;                     % count on loop
 kindOfTest = 'testsDate';       % file name
 gesture = 'gesture';            % kind of gesture to record
 flagIMUData = false;            % IMU sync flag
