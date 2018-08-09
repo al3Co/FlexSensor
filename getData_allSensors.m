@@ -39,9 +39,9 @@ end
 
 %% IMU SENSORS
 disp('IMU sensors ...')
-IMUPorts = [{'COM4'} {'COM6'}]; % COM Ports to which IMUs are connected
-[~,numIMUS] = size(IMUPorts);      % num of IMUS connected
-baudrate = 921600;              % rate at which information is transferred
+IMUPorts = [{'COM4'} {'COM6'}];     % COM Ports to which IMUs are connected
+[~,numIMUS] = size(IMUPorts);       % num of IMUS connected
+baudrate = 921600;                  % rate at which information is transferred
 
 % create nIMUs instances
 for imu = 1:numIMUS
