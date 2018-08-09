@@ -17,6 +17,8 @@ filename = ('lateral_' + filename)          # change here the kind of movement
 startFlag = False
 nCount = 0
 
+# TODO: plot data at the end
+
 try:
     ser = serial.Serial('COM11', 115200)
     file = open((filename + '.txt'), mode = 'w')
