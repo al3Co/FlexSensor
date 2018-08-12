@@ -21,6 +21,9 @@ class threadsObj (threading.Thread):
     def stopped(self):
         return self._stop_event.is_set()
 
+    def clear(self):
+        self._stop_event.clear()
+
     def run(self):
         print ("Starting " + self.name)
         if self.threadID == 1:
