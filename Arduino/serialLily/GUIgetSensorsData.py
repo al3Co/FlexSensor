@@ -23,7 +23,7 @@ try:
     ser = serial.Serial('COM11', 115200)
     file = open((filename + '.txt'), mode = 'w')
 except:
-    sys.exit('review the serial port')
+    sys.exit('review serial port')
 
 def readSensors():
     global nCount
