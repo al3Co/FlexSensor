@@ -1,3 +1,5 @@
+% this code gets the data needed for pca or ann analisys
+
 clc
 clear
 
