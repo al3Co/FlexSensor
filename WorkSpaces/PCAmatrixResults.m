@@ -10,17 +10,21 @@ movs = string(movs);
 
 column = 1;
 coeffInterior = [];
-coeffCovInterior = [];
+%coeffCovInterior = [];
 
 coeffExterior = [];
-coeffCovExterior = [];
+%coeffCovExterior = [];
+
+% All the movements in the vector are obtained. 
+% A matrix with the coefficients per sensor is created 
+% for the interior and exterior data.
 
 for mov = movs
-    disp(mov)
+    %disp(mov)
 	T = load(mov+".mat");
 	T = T.(mov);
     
-	interior = [T.A0 T.A1 T.A2 T.A3 T.A4 T.A5 T.A6];
+	interior = [T.A0 T.A1 T.A2 T.A4 T.A7];
     coeff = pca(interior);
 	% COEFF = pcacov(interior);
     for row = 1:length(coeff)
@@ -28,7 +32,7 @@ for mov = movs
         % coeffCovInterior(row, column) = max(COEFF(row,:));    
     end
 
-    exterior = [T.A7 T.A8 T.A9 T.A10 T.A11 T.A12 T.A13 T.A14];
+    exterior = [T.A5 T.A6 T.A7 T.A8 T.A9];
     coeff = pca(exterior);
     % COEFF = pcacov(exterior);
     for row = 1:length(coeff)
@@ -39,20 +43,32 @@ for mov = movs
     column = column + 1;
 end
 
+% gets the mean of each sensor to know which fits better the tasks
+
+mean_interior = mean(coeffInterior,2);
+[~,In_order] = sort(mean_interior, 'descend')
+
+mean_exterior = mean(coeffExterior,2);
+[~,Ex_order] = sort(mean_exterior, 'descend')
+
+
 %% plotting
 
-fontSize = 12;
+fontSize = 14;
 numColLeg = 4;
 
 % ax1 = subplot(2,1,1);
 figure(1)
 bar(coeffInterior,'hist')
 title('Internal side','FontSize',fontSize)
-xlabel('Number of Sensor')
-ylabel('Coefficient')
+x = xlabel('Number of Sensor');
+set(x, 'FontSize', fontSize) 
+y = ylabel('Coefficient');
+set(y, 'FontSize', fontSize) 
+ylim([0.4 1])
 
-legend({'Horizontal displacement','Abduction','Flexion',...
-    'Ascending-closing screw','Ascending-opening screw'},...
+legend({'Horizontal adduction','Abduction','Flexion',...
+    'Closing drill','Opening drill'},...
     'Location','southoutside',...
     'NumColumns',numColLeg, 'FontSize',fontSize)
 legend('boxoff')
@@ -61,11 +77,14 @@ legend('boxoff')
 figure(2)
 bar(coeffExterior,'hist')
 title('External side','FontSize',fontSize)
-xlabel('Number of Sensor')
-ylabel('Coefficient')
+x = xlabel('Number of Sensor');
+set(x, 'FontSize', fontSize) 
+y = ylabel('Coefficient');
+set(y, 'FontSize', fontSize) 
+ylim([0.4 1])
 
-legend({'Horizontal displacement','Abduction','Flexion',...
-    'Ascending-closing screw','Ascending-opening screw'},...
+legend({'Horizontal adduction','Abduction','Flexion',...
+    'Closing drill','Opening drill'},...
     'Location','southoutside',...
     'NumColumns',numColLeg, 'FontSize',fontSize)
 legend('boxoff')
