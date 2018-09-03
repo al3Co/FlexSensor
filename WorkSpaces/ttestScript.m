@@ -9,7 +9,7 @@ D = allData;
 sensorsAll = [D.A0 D.A1 D.A2 D.A3 D.A4 D.A5 D.A6 D.A7 D.A8 D.A9];
 sensorsInt = [D.A0 D.A1 D.A2 D.A3 D.A4];
 sensorsExt = [D.A5 D.A6 D.A7 D.A8 D.A9];
-sensPCA = [D.A7 D.A2 D.A1 D.A0];
+sensPCA = [D.A1 D.A3 D.A4 D.A7 D.A9];
 
 % quaternions
 quatIMU = [D.Quat2_1 D.Quat2_2 D.Quat2_3 D.Quat2_4];
