@@ -21,8 +21,6 @@ contributionsExt = [];
 % A matrix with the coefficients per sensor is created 
 % for the interior and exterior data.
 
-% contribución sensor 1 = contribuciónPC1*contribuciónsensor1PC1 + contribuciónPC2*contribuciónsensor1PC2 + contribuciónPC3*contribuciónS1aPC3
-
 for mov = movs
     %disp(mov)
 	T = load(mov+".mat");
@@ -32,6 +30,7 @@ for mov = movs
     [coeff,~,~,~,explained,~] = pca(interior);
     explInterior(:,column) = explained;
     coeffPos = abs(coeff);
+
     for row = 1:length(coeff)
         coeffInterior(row, column) = max(coeff(row,:));
         
@@ -46,6 +45,7 @@ for mov = movs
     [coeff,~,~,~,explained,~] = pca(exterior);
     explExterior(:,column) = explained;
     coeffPos = abs(coeff);
+
     for row = 1:length(coeff)
         coeffExterior(row, column) = max(coeff(row,:));
         
@@ -61,12 +61,37 @@ end
 % gets the mean of each sensor to know which fits better the tasks
 
 mean_interior = mean(coeffInterior,2);
-[~,In_order] = sort(mean_interior, 'descend')
+[~,In_order] = sort(mean_interior, 'descend');
 
 mean_exterior = mean(coeffExterior,2);
-[~,Ex_order] = sort(mean_exterior, 'descend')
+[~,Ex_order] = sort(mean_exterior, 'descend');
 
 
+for i = 1: length(contributionsExt)
+   for j = 1: length(contributionsExt)
+       Int(i,j) = contributionsInt(i,j)/coeffInterior(i,j);
+       Ext(i,j) = contributionsExt(i,j)/coeffExterior(i,j);
+   end
+end
+
+
+for i = 1: length(contributionsExt)
+    sume = sum(contributionsInt(:,1));
+    contributionsIntRatio(:,i) = contributionsInt(:,i)/sume;
+    
+    sume = sum(contributionsExt(:,1));
+    contributionsExtRatio(:,i) = contributionsExt(:,i)/sume;
+end
+
+
+for i = 1: length(contributionsExt)
+    sumContSensInt(i) = sum(contributionsInt(:,i));
+    sumContSensExt(i) = sum(contributionsExt(:,i));
+end
+
+% 
+sumContSensInt = sumContSensInt/(max(sumContSensInt));
+sumContSensExt = sumContSensExt/(max(sumContSensExt));
 %% plotting
 
 fontSize = 14;
