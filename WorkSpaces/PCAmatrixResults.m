@@ -118,7 +118,8 @@ figure(2)
 bar(coeffExterior,'hist')
 title('External side','FontSize',fontSize)
 x = xlabel('Number of Sensor');
-set(x, 'FontSize', fontSize) 
+set(x, 'FontSize', fontSize)
+xticklabels({'6','7','8','9','10'})
 y = ylabel('Coefficient');
 set(y, 'FontSize', fontSize) 
 ylim([0.4 1])
@@ -134,7 +135,7 @@ bar(contributionsInt,'hist')
 title('Internal side','FontSize',fontSize)
 x = xlabel('Number of Sensor');
 set(x, 'FontSize', fontSize) 
-y = ylabel('Contribution %');
+y = ylabel('Sensivity to motions %');
 set(y, 'FontSize', fontSize) 
 
 legend({'Horizontal adduction','Abduction','Flexion',...
@@ -147,8 +148,9 @@ figure(4)
 bar(contributionsExt,'hist')
 title('External side','FontSize',fontSize)
 x = xlabel('Number of Sensor');
-set(x, 'FontSize', fontSize) 
-y = ylabel('Contribution %');
+set(x, 'FontSize', fontSize)
+xticklabels({'6','7','8','9','10'})
+y = ylabel('Sensivity to motions %');
 set(y, 'FontSize', fontSize)
 
 legend({'Horizontal adduction','Abduction','Flexion',...

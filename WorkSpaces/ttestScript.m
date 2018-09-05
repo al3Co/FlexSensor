@@ -6,21 +6,22 @@ load('allData.mat', 'allData');
 D = allData;
 
 % sensors
-sensorsAll = [D.A0 D.A1 D.A2 D.A3 D.A4 D.A5 D.A6 D.A7 D.A8 D.A9];
-sensorsInt = [D.A0 D.A1 D.A2 D.A3 D.A4];
-sensorsExt = [D.A5 D.A6 D.A7 D.A8 D.A9];
-sensPCA = [D.A1 D.A3 D.A4 D.A7 D.A9];
+% sensorsAll = [D.A0 D.A1 D.A2 D.A3 D.A4 D.A5 D.A6 D.A7 D.A8 D.A9];
+% sensorsInt = [D.A0 D.A1 D.A2 D.A3 D.A4];
+% sensorsExt = [D.A5 D.A6 D.A7 D.A8 D.A9];
+PCA_A = [D.A1 D.A3 D.A4];
+PCA_B = [D.A7 D.A9];
 
 % quaternions
-quatIMU = [D.Quat2_1 D.Quat2_2 D.Quat2_3 D.Quat2_4];
-quatOpti = angle2quat(D.angBrazoX, D.angBrazoY, D.angBrazoZ);
+IMU = [D.Quat2_1 D.Quat2_2 D.Quat2_3 D.Quat2_4];
+Opti = angle2quat(D.angBrazoX, D.angBrazoY, D.angBrazoZ);
 clear D
 
 % categorical type, dummy var
 type = categorical(allData.type);
-[typeNumeric, order] = grp2idx(type);
-
-D = dummyvar(typeNumeric);
+[typeNumeric, ~] = grp2idx(type);
+clear allData
+gesture = dummyvar(typeNumeric);
 
 dumm = zeros(length(typeNumeric),3);
 for row = 1:length(typeNumeric)
@@ -39,14 +40,13 @@ for row = 1:length(typeNumeric)
             dumm(row,:) = [1,0,1];
     end
 end
+clear row
 
 % mixing data
-sensorAll_type = [sensorsAll D];
-sensorI_type = [sensorsInt D];
-sensorE_type = [sensorsExt D];
-sensPCA_type = [sensPCA D];
 
-sensPCA_IMU = [sensPCA_type quatIMU];
-sensPCA_Opti = [sensPCA_type quatOpti];
-sensI_IMU = [sensorsInt quatIMU];
-sensE_IMU = [sensorsExt quatIMU];
+PCA_A_Gesture = [PCA_A gesture];
+PCA_B_Gesture = [PCA_B gesture];
+
+PCA_A_Gesture_IMU = [PCA_A_Gesture IMU];
+PCA_B_Gesture_IMU = [PCA_B_Gesture IMU];
+
