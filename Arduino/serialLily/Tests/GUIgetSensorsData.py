@@ -20,7 +20,7 @@ nCount = 0
 # TODO: plot data at the end
 
 try:
-    ser = serial.Serial('COM11', 115200)
+    ser = serial.Serial('/dev/tty.usbserial-FT9028B4', 115200)
     file = open((filename + '.txt'), mode = 'w')
 except:
     sys.exit('review serial port')
@@ -30,8 +30,11 @@ def readSensors():
     if not startFlag:
         return
     ser.flush()
-    print('\rCount: {} Sensors: {}'.format(nCount, ser.readline().strip()), sep='\n', end='', flush=True)
-    file.write(str(nCount) + ',' + str(datetime.datetime.now().time()) + ',' + str(ser.readline().strip()) + '\n')
+    try:
+        file.write(str(nCount) + ',' + str(datetime.datetime.now().time()) + ',' + str(ser.readline().decode('utf-8').strip()) + '\n')
+        print('\rCount: {} Sensors: {}'.format(nCount, ser.readline().decode('utf-8').strip()), sep='\n', end='', flush=True)
+    except UnicodeDecodeError:
+        pass
     nCount += 1
     window.after(0, readSensors)
 
@@ -53,7 +56,7 @@ window = tk.Tk()
 window.title("Getting sensor data")
 window.geometry("300x100")
 
-label = tk.Label(window, fg="green")
+label = tk.Label(window, fg="red")
 label.pack()
 label.config(text='Ready')
 
