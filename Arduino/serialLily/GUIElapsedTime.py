@@ -21,7 +21,7 @@ class getSerialData(Frame):
         self.fileName = time.strftime("%Y%m%d-%H%M%S")
         self.ser = serial.Serial()
         self.ser.baudrate = 115200
-        self.ser.port = '/dev/tty.usbserial-FT9028B4'
+        self.ser.port = '/dev/tty.usbserial-FTG4DJZ7'
         self.file = None
 
     def makeWidgets(self):
@@ -35,7 +35,7 @@ class getSerialData(Frame):
         try:
             self._elapsedtime = time.time() - self._start
             self.file.write(str(self.nCount) + ',' + str(datetime.datetime.now().time()) + ',' + str(self.ser.readline().decode('utf-8').strip()) + '\n')
-            #self._setTime(self._elapsedtime)
+            self._setTime(self._elapsedtime)
             self.nCount += 1
         except UnicodeDecodeError:
             pass
