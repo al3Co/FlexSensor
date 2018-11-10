@@ -49,6 +49,7 @@ def start():
     serB.inWaiting()
     # changing variable to True
     running = True
+    statusLabel.config(text='Reading')
 
 def stop():
     global running, nCount
@@ -59,6 +60,7 @@ def stop():
     fileA.close()
     fileB.close()
     print('\nStop')
+    statusLabel.config(text='Ready')
 
 root = Tk()
 root.title("Get serial port data")
@@ -70,9 +72,12 @@ app.grid()
 start = Button(app, text="Start", width=10, command=start)
 stop = Button(app, text="Stop", width=10, command=stop)
 
+message = 'Ready'
+statusLabel = Label(app, text=message, font='size, 10')
 
 start.grid(row=0, column=0)
 stop.grid(row=0, column=1)
+statusLabel.grid(row=1, column=1)
 
 root.after(1, scanning)
 root.mainloop()
