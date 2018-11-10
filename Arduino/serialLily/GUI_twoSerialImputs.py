@@ -73,7 +73,6 @@ stop = Button(app, text="Stop", width=10, command=stop)
 
 start.grid(row=0, column=0)
 stop.grid(row=0, column=1)
-#label.grid(row=1, column=1)
 
 root.after(1, scanning)
 root.mainloop()
